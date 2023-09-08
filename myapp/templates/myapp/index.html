@@ -1,0 +1,171 @@
+{% extends 'base2.html' %}
+{% load static %}
+<style>
+    .row{
+        display: flex;
+    flex-wrap: nowrap;
+    }
+</style>
+
+
+{% block content %}
+    <div class="container" style="margin-top: 100px;">
+        <div class="notice" style="box-shadow: rgba(34, 155, 133, 0.53) 0px 0px 0px 3px; padding: 20px;">
+        <h3 id="remaining-space" style="text-align: center; font-family: none;">
+            Unlock nutritional insights by tracking your food intake and calculating consumed calories on this page.
+        </h3>
+        <h4 id="remaining-space" style="text-align: center; font-family: none;">
+            Explore detailed nutritional information for individual items by simply clicking this button.
+        </h4>
+        <div class="navbar" >
+            <a class="getstarted scrollto"  style=" margin: auto;" href="{% url 'home' %}">Nutritional Values</a>  
+        </div>
+    </div>
+        <br><br>
+
+        <div style="text-align:center;" class="row">
+            <div class="col-md-12 ">
+                <form method="POST">
+                    <div class="form-group row">
+                        {% csrf_token %}
+                        <label class="">
+                            <h3><b>Select Food To Add </b></h3>
+                        </label>
+                        <select class="col-md-6 form-control" name="food_consumed" id="food_consumed">
+                            {% for food in foods %}
+                            <option value="{{food.name}}">{{food.name}}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn btn-success" type="submit">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <br>
+
+        <h3 style="text-align:center">Calorie Goal</h3>
+        <br>
+        <div class="row">
+            <div class="col-md-9 offset-1">
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 20%" aria-valuenow="0"
+                        aria-valuemin="0" aria-valuemax="0"></div>
+
+                </div>
+            </div>
+        </div>
+
+        <br><br>
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="text-center mb-4">Today's Consumption</h4>
+                <div class="table-responsive">
+                    <table id="table" class="table table-bordered table-hover">
+                        <thead class="bg-info text-white">
+                            <tr>
+                                <th scope="col" style="text-align:center">Food item</th>
+                                <th scope="col" style="text-align:center">Carbs (g)</th>
+                                <th scope="col" style="text-align:center">Protein (g)</th>
+                                <th scope="col" style="text-align:center">Fats (g)</th>
+                                <th scope="col" style="text-align:center">Calories (Kcal)</th>
+                                <th scope="col" style="text-align:center">Remove Item</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for c in consumed_food %}
+                            <tr>
+                                <td class="text-center">{{ c.food_consumed.name }}</td>
+                                <td class="text-center">{{ c.food_consumed.carbs }}</td>
+                                <td class="text-center">{{ c.food_consumed.protein }}</td>
+                                <td class="text-center">{{ c.food_consumed.fats }}</td>
+                                <td class="text-center">{{ c.food_consumed.calories }}</td>
+                                <td class="text-center"><a class="btn btn-danger btn-sm" href="{% url 'delete' c.pk %}">X</a></td>
+                            </tr>
+                            {% endfor %}
+                            <tr class="bg-info text-white">
+                                <td class="text-center"><b>Total</b></td>
+                                <td class="text-center" id="totalCarbs"><b></b></td>
+                                <td class="text-center" id="totalProtien"><b></b></td>
+                                <td class="text-center" id="totalFats"><b></b></td>
+                                <td class="text-center" id="totalCalories"><b></b></td>
+                                <td class="text-center"></td> <!-- Empty cell for alignment -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="col-md-5" style="margin: auto;">
+            <div class="card mt-6">
+                <div class="card-header bg-info text-white">
+                    <h4 class="text-center">Nutrients Breakdown</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <canvas id="myChart" width="200" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+<script>
+    var table = document.getElementById("table");
+    var carbs = 0, protein = 0, fats = 0, calories = 0;
+
+    for (var i = 1; i < table.rows.length - 1; i++) {
+        console.log(table.rows[i].cells[1].innerHTML);
+        carbs += parseFloat(table.rows[i].cells[1].innerHTML);
+        carbs = Math.round(carbs);
+        protein += parseFloat(table.rows[i].cells[2].innerHTML);
+        protein = Math.round(protein)
+        fats += parseFloat(table.rows[i].cells[3].innerHTML);
+        fats = Math.round(fats);
+        calories += parseFloat(table.rows[i].cells[4].innerHTML);
+        calories = Math.round(calories);
+    }
+    console.log(fats);
+
+    document.getElementById("totalCarbs").innerHTML = '<b>' + carbs + '(gm)</b>';
+    document.getElementById("totalProtien").innerHTML = '<b>' + protein + '(gm)</b>';
+    document.getElementById("totalFats").innerHTML = '<b>' + fats + '(gm)</b>';
+    document.getElementById("totalCalories").innerHTML = '<b>' + calories + '(Kcal)</b>';
+
+    var calPer = (calories / 2000) * 100;
+    document.getElementsByClassName("progress-bar")[0].setAttribute("style", "width:" + calPer + "%");
+
+
+    var total = carbs + protein + fats;
+    var carbsP = Math.round((carbs / total) * 100);
+    var protienP = Math.round((protein / total) * 100);
+    var fatsP = Math.round((fats / total) * 100);
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Carbs ' + carbsP + '%', 'Protein ' + protienP + '%', 'Fats ' + fatsP + '%'],
+            datasets: [{
+                label: '# of Votes',
+                data: [carbsP, protienP, fatsP],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+
+                ],
+                borderWidth: 1
+            }]
+        },
+
+    }); </script>
+{% endblock %}

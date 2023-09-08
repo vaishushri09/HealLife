@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Health Report</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS for styling -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+        }
+        .chart-container {
+            margin-top: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Health Report</h1>
+
+        <!-- User Details -->
+        <h2>User Details</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <p><strong>Name:</strong> {{ user_profile.name }}</p>
+                <p><strong>Gender:</strong> {{ user_profile.gender }}</p>
+                <p><strong>Blood Group:</strong> {{ user_profile.blood_group }}</p>
+                <button id="download-pdf-button" class="btn btn-primary">Download PDF Report</button>
+            </div>
+        </div>
+
+        <!-- Daily Calorie Intake -->
+        <h2>Daily Calorie Intake</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <p><strong>Total Calories Consumed Today:</strong> {{ total_calories_today }} kcal</p>
+                <p><strong>Remaining Calories:</strong> {{ rem }} kcal</p>
+            </div>
+        </div>
+
+        <!-- Sleep Quality Bar Chart -->
+        <h2>Sleep Quality</h2>
+        <div class="row chart-container">
+            <div class="col-md-6">
+                <div id="sleep-quality-chart"></div>
+            </div>
+        </div>
+
+        <!-- Calorie Intake Pie Chart -->
+        <h2>Calorie Intake</h2>
+        <div class="row chart-container">
+            <div class="col-md-6">
+                <div id="calorie-intake-chart"></div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h2>Suggestions</h2>
+        <p>{{suggestions}}</p>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    <!-- Bootstrap JavaScript and jQuery (required for Bootstrap) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- jsPDF and HTML to PDF script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script>
+        // Function to generate and download the PDF report
+        function generatePDFReport() {
+            const element = document.querySelector(".container"); // Select the container with all content
+    
+            // Configure PDF options
+            const pdfOptions = {
+                margin: 10,
+                filename: 'user_health_report.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+    
+            // Generate the PDF
+            html2pdf().from(element).set(pdfOptions).outputPdf(function(pdf) {
+                const blob = new Blob([pdf], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+    
+                // Create a download link and trigger the download
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'user_health_report.pdf';
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+    
+                // Clean up
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+        }
+    
+        // Attach the generatePDFReport function to the button click event
+        document.getElementById("download-pdf-button").addEventListener("click", generatePDFReport);
+    </script>
+    
+
+    <!-- Your existing Plotly scripts with improved styling -->
+
+
+    <script>
+        
+    // Function to generate the PDF report
+    
+    var sleepPatternData = [
+    {% for pattern in sleep_patterns %}
+        {
+            'start_time': "{{ pattern.start_time|date:'Y-m-d H:i' }}",
+            'end_time': "{{ pattern.end_time|date:'Y-m-d H:i' }}",
+            'quality': "{{ pattern.get_quality_rating_display }}",
+        },
+    {% endfor %}
+];
+
+// Create arrays to hold x and y data
+var sleepTimes = [];
+var sleepQuality = [];
+var sleepQualityColors = [];
+var sleepQualityHeights = []; // Added to control bar heights
+
+// Map sleep quality to colors and heights
+for (var i = 0; i < sleepPatternData.length; i++) {
+    sleepTimes.push(sleepPatternData[i].start_time);
+    sleepQuality.push(sleepPatternData[i].quality);
+
+    if (sleepPatternData[i].quality === 'Excellent') {
+        sleepQualityColors.push('rgba(0, 128, 0, 0.7)'); // Excellent (Green)
+        sleepQualityHeights.push(5); // Set bar height for Excellent
+    } else if (sleepPatternData[i].quality === 'Very Good') {
+        sleepQualityColors.push('rgba(255, 255, 0, 0.7)'); // Very Good (Yellow)
+        sleepQualityHeights.push(4); // Set bar height for Very Good
+    } else if (sleepPatternData[i].quality === 'Good') {
+        sleepQualityColors.push('rgba(255, 165, 0, 0.7)'); // Good (Orange)
+        sleepQualityHeights.push(3); // Set bar height for Good
+    } else if (sleepPatternData[i].quality === 'Fair') {
+        sleepQualityColors.push('rgba(255, 69, 0, 0.9)'); // Fair (Orange-Red)
+        sleepQualityHeights.push(2); // Set bar height for Fair
+    } else if (sleepPatternData[i].quality === 'Poor') {
+        sleepQualityColors.push('rgba(255, 0, 0, 0.7)'); // Poor (Red)
+        sleepQualityHeights.push(1); // Set bar height for Poor
+    }
+}
+
+// Create the bar chart
+var data = [{
+    x: sleepTimes,
+    y: sleepQualityHeights, // Use sleepQualityHeights for bar heights
+    type: 'bar',
+    marker: {
+        color: sleepQualityColors
+    }
+}];
+
+var layout = {
+    title: 'Sleep Patterns',
+    xaxis: {
+        title: 'Sleep Time',
+    },
+    yaxis: {
+        title: 'Sleep Quality',
+        tickvals: [1, 2, 3, 4, 5], // Set tick values for quality levels
+        ticktext: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'] // Set tick labels
+    }
+};
+
+// Create the Plotly chart
+Plotly.newPlot('sleep-quality-chart', data, layout);
+   
+
+   
+        var calorieIntakeData = [
+            {
+                values: [{{ total_calories_today }}, {{ rem }}],
+                labels: ['Calories Consumed', 'Remaining Calories'],
+                type: 'pie',
+                marker: {
+                    colors: ['rgb(255 108 122 / 74%)', 'rgb(88 244 88 / 80%);']
+                }
+            }
+        ];
+        var calorieIntakeLayout = {
+            title: 'Calorie Intake',
+            showlegend: true
+        };
+        Plotly.newPlot('calorie-intake-chart', calorieIntakeData, calorieIntakeLayout);
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep Pattern</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+</head>
+<body>
+    <!-- Your content goes here -->
+    <div class="container">
+        <canvas id="sleepPatternChart"></canvas>
+    </div>
+    <script>
+        <script>
+    // Assume you have sleep data as an array of categories and their durations
+    var sleepData = [
+        { category: 'Deep Sleep', duration: 6 },
+        { category: 'Light Sleep', duration: 3 },
+        { category: 'REM Sleep', duration: 2 }
+        // Add more categories and durations as needed
+    ];
+
+    // Extract categories and durations for Chart.js
+    var categories = sleepData.map(item => item.category);
+    var durations = sleepData.map(item => item.duration);
+
+    // Get the canvas element
+    var canvas = document.getElementById('sleepPatternChart');
+
+    // Create the pie chart using Chart.js
+    var ctx = canvas.getContext('2d');
+    var sleepPatternChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: categories,
+            datasets: [{
+                data: durations,
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(75, 192, 192, 0.7)'
+                    // Add more colors as needed
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'top'
+            }
+            // Add more chart options as needed
+        }
+    });
+</script>
+
+    </script>
+</body>
+</html>

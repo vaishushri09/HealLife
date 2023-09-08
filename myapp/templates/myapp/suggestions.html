@@ -1,0 +1,123 @@
+{% extends 'base2.html' %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 5px solid #007bff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        strong {
+            color: #007bff;
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.5;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+   
+
+   {% block content %}
+<div>
+    <div class="container">
+        <h1>Your Sleep Patterns</h1>
+        <ul>
+            {% for pattern in sleep_patterns %}
+                <li>
+                    <strong>Sleep time:</strong> {{ pattern.start_time|date:"Y-m-d H:i" }}<br>
+                    <strong>Wake time:</strong> {{ pattern.end_time|date:"Y-m-d H:i" }}<br>
+                    <strong>Sleep quality:</strong> {{ pattern.get_quality_rating_display }}
+                </li>
+            {% endfor %}
+        </ul>
+        
+        <h2>Sleep Cycle Suggestion</h2>
+        <p>{{ suggestion }}</p>
+    </div>
+
+    <canvas id="sleepChart" width="400" height="300"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+         const sleepData = [
+        { date: '2023-08-01', start: '23:00', end: '07:00', quality: 'Good' },
+        { date: '2023-08-02', start: '23:30', end: '06:30', quality: 'Fair' },
+        { date: '2023-08-03', start: '00:00', end: '08:00', quality: 'Very Good' },
+        // ... add more sample data here ...
+    ];
+
+   
+           
+        const dates = sleepData.map(item => item.date);
+        const starts = sleepData.map(item => item.start);
+        const ends = sleepData.map(item => item.end);
+        const qualities = sleepData.map(item => item.quality);
+    
+        const ctx = document.getElementById('sleepScatter').getContext('2d');
+        new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Sleep Cycles',
+                    data: sleepData.map(item => ({
+                        x: item.date,
+                        y: item.start,
+                        r: 5  // Marker size
+                    })),
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)'
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Sleep Start Time'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    }
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(context) {
+                            const data = sleepData[context.dataIndex];
+                            return `${data.start} - ${data.end}, Quality: ${data.quality}`;
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    
+</div>
+{% endblock %}

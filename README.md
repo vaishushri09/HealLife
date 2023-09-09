@@ -45,8 +45,14 @@ Have feedback, suggestions, or facing issues? We'd love to hear from you! Feel f
 
 ## License 📜
 
+
+
+
 This project is licensed under the [MIT License](LICENSE).
 
 ---
 
 Made with ❤️ by the HealLife team. Start your journey to a healthier and happier life! 🌈🏃‍♂️🥦
+
+## Working Images
+<img src="healthcare-removebg.png" alt="HealthTracker Logo">

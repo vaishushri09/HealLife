@@ -23,11 +23,11 @@ The people who make it Happen at HealLife:
 
 ## Installation and Usage 🚀
 
-1. Clone the repository: `git clone https://github.com/yourusername/HealLife.git`
-2. Navigate to the project directory: `cd HealLife`
-3. Install dependencies: `pip install -r requirements.txt`
-4. Run the development server: `python manage.py runserver`
-5. Access the app in your web browser at `http://localhost:8000`
+1. Clone the repository: ```sh git clone https://github.com/yourusername/HealLife.git ```
+3. Navigate to the project directory: `cd HealLife`
+4. Install dependencies: `pip install -r requirements.txt`
+5. Run the development server: `python manage.py runserver`
+6. Access the app in your web browser at `http://localhost:8000`
 
 ## Contributing 🤝
 

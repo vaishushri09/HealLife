@@ -1,5 +1,5 @@
 {% extends 'base2.html' %}
-
+{% load static %}
 {% block css %}
 
 {% endblock %}
@@ -15,15 +15,31 @@
         </div>
         <div class="c-bmi__groups" readonly>
 
-          <label for="bmi-g0" class="{% if bmi < 18.5 %} highlighted1 {% endif %}">Underweight</label>
+              <label for="bmi-g0" class="{% if bmi < 18.5 %} highlighted1 {% endif %}">Underweight</label>
 
 
-          <label for="bmi-g1" class="{% if bmi >= 18.5 and bmi < 24.9 %} highlighted2 {% endif %}">Normal</label>
+              <label for="bmi-g1"
+                  class="{% if bmi >= 18.5 and bmi < 25 %} highlighted2 {% endif %}">Normal</label>
 
-          <label for="bmi-g2" class="{% if bmi >= 25 and bmi < 29.9 %} highlighted3 {% endif %}">Pre-obesity</label>
+              <label for="bmi-g2"
+                  class="{% if bmi >= 25 and bmi < 29.9 %} highlighted3 {% endif %}">Pre-obesity</label>
 
 
-          <label for="bmi-g3" class="{% if bmi >= 29.9 %} highlighted4 {% endif %}">Obese</label>
+              <label for="bmi-g3" class="{% if bmi >= 29.9 %} highlighted4 {% endif %}">Obese</label>
+              {% if bmi < 18.5 %}<div class="c-bmi__group-text"> The WHO regards a BMI of less than 18.5 as
+                  underweight and may indicate
+                  malnutrition, an eating disorder, or other health problems.
+          </div>{% endif %}
+          {% if bmi >= 18.5 and bmi < 24.9 %} <div class="c-bmi__group-text">A BMI between 18.5 and 25 is
+              considered normal and healthy.
+      </div> {% endif %}
+      {% if bmi >= 25 and bmi < 29.9 %}<div class=" c-bmi__group-text ">People who fall into this category may be
+          at risk of developing
+          obesity.<br />This was earlier classified as "overweight".
+  </div>{% endif %}
+  {% if bmi >= 29.9 %} <div class="c-bmi__group-text">People who have BMI equal or over 30 may have obesity, which
+      is defined as an
+      abnormal or excessive accumulation of fat that may harm health.</div> {% endif %}
         </div>
       </div>
     </div>

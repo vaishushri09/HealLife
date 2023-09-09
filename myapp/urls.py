@@ -29,7 +29,6 @@ urlpatterns = [
     path('suggest_sleep_cycle/', views.suggest_sleep_cycle, name='suggest_sleep_cycle'),
     path('generate-report/', views.generate_report, name='generate-report'),
     path('welcome/', index_view, name='welcome'),
-    path('testt/', views.testing, name='testt'),
     path('generate/', views.generate_post, name='generate_post'),
     path('create_post/', views.create_post, name='create_post'),
     path('see/', views.post_list, name='post_list'),

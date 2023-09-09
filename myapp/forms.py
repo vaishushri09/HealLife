@@ -10,9 +10,6 @@ class SleepPatternForm(forms.ModelForm):
             'end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
 
-
-# posts/forms.py
-
 from django import forms
 from .models import Post
 

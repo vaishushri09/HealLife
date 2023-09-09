@@ -55,4 +55,4 @@ This project is licensed under the [MIT License](LICENSE).
 Made with ❤️ by the HealLife team. Start your journey to a healthier and happier life! 🌈🏃‍♂️🥦
 
 ## Working Images
-<img src="chatbot/1.jpeg" alt="HealthTracker Logo">
+<img src="chatbot/1.jpg" alt="HealthTracker Logo">

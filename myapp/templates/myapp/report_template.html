@@ -217,7 +217,7 @@
 
 
                     <label for="bmi-g1"
-                        class="{% if bmi >= 18.5 and bmi < 24.9 %} highlighted2 {% endif %}">Normal</label>
+                        class="{% if bmi >= 18.5 and bmi < 25 %} highlighted2 {% endif %}">Normal</label>
 
                     <label for="bmi-g2"
                         class="{% if bmi >= 25 and bmi < 29.9 %} highlighted3 {% endif %}">Pre-obesity</label>
@@ -251,19 +251,18 @@
             <p><strong>Remaining Calories:</strong> {{ rem }} kcal</p>
         </div>
     </div>
-    <canvas id="sleep-quality-chart" width="400" height="200"></canvas>
+    <div style="width: 50%; margin: 0 auto;">
+        <canvas id="calorie-intake-chart"></canvas>
+    </div>
 
-
-    <!-- Sleep Quality Bar Chart -->
     <h2>Sleep Quality</h2>
+    <canvas id="sleep-quality-chart" width="400" height="200"></canvas> 
     <div class="row chart-container">
         <div class="col-md-6">
             <div id="sleep-quality-chart"></div>
         </div>
     </div>
-    <div style="width: 50%; margin: 0 auto;">
-        <canvas id="calorie-intake-chart"></canvas>
-    </div>
+    
 
     <div>
         <h2>Suggestions</h2>
@@ -275,7 +274,104 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+    
+   
+        var calorieIntakeData = {
+            datasets: [{
+                data: [{{ total_calories_today }}, {{ rem }}],
+                backgroundColor: ['rgb(255, 108, 122, 0.74)', 'rgb(88, 244, 88, 0.80)'],
+            }],
+            labels: ['Calories Consumed', 'Remaining Calories']
+        };
 
+        // Get the canvas element
+        var ctx = document.getElementById('calorie-intake-chart').getContext('2d');
+
+        // Create the pie chart using Chart.js with animation
+        var chart = new Chart(ctx, {
+            type: 'pie',
+            data: calorieIntakeData,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Calorie Intake',
+                    fontSize: 18
+                },
+                animation: {
+                    animateRotate: true, // Add rotation animation
+                    animateScale: true,  // Add scaling animation
+                },
+                responsive: true, // Make the chart responsive
+                maintainAspectRatio: false, // Allow chart size to vary
+                legend: {
+                    position: 'bottom' // Position the legend at the bottom
+                }
+            }
+        });
+         var sleepPatternData = [
+    {% for pattern in sleep_patterns %}
+        {
+            'start_time': "{{ pattern.start_time|date:'Y-m-d H:i' }}",
+            'end_time': "{{ pattern.end_time|date:'Y-m-d H:i' }}",
+            'quality': "{{ pattern.get_quality_rating_display }}",
+        },
+    {% endfor %}
+];
+
+var sleepDurations = sleepPatternData.map(function(item) {
+            var startTime = new Date(item.start_time);
+            var endTime = new Date(item.end_time);
+            var durationInMilliseconds = endTime - startTime;
+            var durationInHours = durationInMilliseconds / (1000 * 60 * 60); // Convert to hours
+            return durationInHours;
+        });
+
+        var ctx = document.getElementById('sleep-quality-chart').getContext('2d');
+
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: sleepPatternData.map(function(item) {
+                    return item.start_time;
+                }),
+                datasets: [{
+                    label: 'Hours Slept',
+                    data: sleepDurations,
+                    backgroundColor: [
+                        'rgba(0, 128, 0, 0.7)',   
+                        'rgba(255, 255, 0, 0.7)', 
+                        'rgba(255, 165, 0, 0.7)'  
+                       ],
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Sleep Patterns',
+                    fontSize: 18
+                },
+                scales: {
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Sleep Time'
+                        }
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Hours Slept'
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1,
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

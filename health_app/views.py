@@ -4,6 +4,7 @@ from .forms import UserRegistrationForm
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile
 from django.contrib.auth.models import User
+from myapp.models import Post
 
 def register(request):
     if request.method == 'POST':
@@ -170,11 +171,13 @@ def aqualog(request):
 def calculate_bmi(a,b):
     bmi=b*10000/(a*a)
     return bmi
+
 @login_required
 def homepage(request):
     user_profile = UserProfile.objects.get(user=request.user)
+    posts = Post.objects.all().order_by('-created_at')
     bmi = calculate_bmi(user_profile.height_cm, user_profile.weight_kg)
-    return render(request, 'homepage.html',{'user_profile':user_profile,'bmi':bmi})
+    return render(request, 'homepage.html',{'user_profile':user_profile,'bmi':bmi, 'posts': posts})
 
 from django.shortcuts import render, redirect
 from .forms import UserProfileForm

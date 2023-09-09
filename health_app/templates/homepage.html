@@ -9,87 +9,87 @@
   <div class="container">
     <div class="bmi" style="margin-bottom: 30px;">
       <div class="bmi-content">
-          <div class="c-bmi__result">
-              <h4>Your BMI Is: <h3><b>{{ bmi|floatformat:2 }}</b></h3>
-              </h4>
-          </div>
-          <div class="c-bmi__groups" readonly>
+        <div class="c-bmi__result">
+          <h4>Your BMI Is: <h3><b>{{ bmi|floatformat:2 }}</b></h3>
+          </h4>
+        </div>
+        <div class="c-bmi__groups" readonly>
 
-              <label for="bmi-g0" class="{% if bmi < 18.5 %} highlighted1 {% endif %}">Underweight</label>
-
-
-              <label for="bmi-g1"
-                  class="{% if bmi >= 18.5 and bmi < 24.9 %} highlighted2 {% endif %}">Normal</label>
-
-              <label for="bmi-g2"
-                  class="{% if bmi >= 25 and bmi < 29.9 %} highlighted3 {% endif %}">Pre-obesity</label>
+          <label for="bmi-g0" class="{% if bmi < 18.5 %} highlighted1 {% endif %}">Underweight</label>
 
 
-              <label for="bmi-g3" class="{% if bmi >= 29.9 %} highlighted4 {% endif %}">Obese</label>
-              {% if bmi < 18.5 %}<div class="c-bmi__group-text"> The WHO regards a BMI of less than 18.5 as
-                  underweight and may indicate
-                  malnutrition, an eating disorder, or other health problems.
-          </div>{% endif %}
-          {% if bmi >= 18.5 and bmi < 24.9 %} <div class="c-bmi__group-text">A BMI between 18.5 and 25 is
-              considered normal and healthy.
-      </div> {% endif %}
-      {% if bmi >= 25 and bmi < 29.9 %}<div class=" c-bmi__group-text ">People who fall into this category may be
-          at risk of developing
-          obesity.<br />This was earlier classified as "overweight".
-  </div>{% endif %}
-  {% if bmi >= 29.9 %} <div class="c-bmi__group-text">People who have BMI equal or over 30 may have obesity, which
-      is defined as an
-      abnormal or excessive accumulation of fat that may harm health.</div> {% endif %}
-  </div>
-  </div>
+          <label for="bmi-g1" class="{% if bmi >= 18.5 and bmi < 24.9 %} highlighted2 {% endif %}">Normal</label>
+
+          <label for="bmi-g2" class="{% if bmi >= 25 and bmi < 29.9 %} highlighted3 {% endif %}">Pre-obesity</label>
+
+
+          <label for="bmi-g3" class="{% if bmi >= 29.9 %} highlighted4 {% endif %}">Obese</label>
+        </div>
+      </div>
     </div>
+<div class="posts" style="display: flex;
+justify-content: center; margin-bottom: 30px;">
+  <div class="postlists" style="display: flex; flex-direction: column;">
+    <h3>You can also view posts from other users by clicking on this button.</h3>
+    <a href="{% url 'post_list' %}"><button type="submit" class="custom-button" style="padding: 10px 20px;
+    background-color: rgb(0, 98, 83);
+    color: #fff;
+    margin: 0 40%;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 2.5rem;
+    transition: background-color 0.3s;
+    ">view post</button></a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-4">
+    <div class="section-title" data-aos="fade-right">
+      <h2>Our Goal</h2>
+      <p>Our all-in-one platform cares for your well-being, managing your health profile, sleep cycle, workout
+        routines, and calorie burn for a balanced lifestyle.</p>
+    </div>
+  </div>
+  <div class="col-lg-8">
     <div class="row">
-      <div class="col-lg-4">
-        <div class="section-title" data-aos="fade-right">
-          <h2>Our Goal</h2>
-          <p>Our all-in-one platform cares for your well-being, managing your health profile, sleep cycle, workout
-            routines, and calorie burn for a balanced lifestyle.</p>
+      <div class="col-md-6 d-flex align-items-stretch">
+        <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
+          <div class="icon"><i class="bi bi-heart-pulse"></i></div>
+          <h4><a href="{% url 'generate-report' %}">Health Profile</a></h4>
+          <p>Introducing your personalized health profile – a comprehensive snapshot of your well-being journey.</p>
         </div>
       </div>
-      <div class="col-lg-8">
-        <div class="row">
-          <div class="col-md-6 d-flex align-items-stretch">
-            <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
-              <div class="icon"><i class="bi bi-heart-pulse"></i></div>
-              <h4><a href="{% url 'generate-report' %}">Health Profile</a></h4>
-              <p>Introducing your personalized health profile – a comprehensive snapshot of your well-being journey.</p>
-            </div>
-          </div>
 
-          <div class="col-md-6 d-flex align-items-stretch">
-            <div class="icon-box" data-aos="zoom-in" data-aos-delay="400">
-              <div class="icon"><i class="bi bi-chat-heart"></i></div>
-              <h4><a href="{% url 'chatbot_view' %}">DR. AI</a></h4>
-              <p>Empower your health journey with our AI chatbot aka DR. AI, your 24/7 source of personalized health
-                insights.</p>
-            </div>
-          </div>
-        
-          <div class="col-md-6 d-flex align-items-stretch mt-4">
-            <div class="icon-box" data-aos="zoom-in" data-aos-delay="200">
-              <div class="icon"><i class="bi bi-clipboard2-heart"></i></div>
-              <h4><a href="{% url 'index' %}">Calorie Tracking</a></h4>
-              <p>Effortlessly monitor your calorie intake and expenditure with our intuitive tracking system.</p>
-            </div>
-          </div>
-
-          <div class="col-md-6 d-flex align-items-stretch mt-4">
-            <div class="icon-box" data-aos="zoom-in" data-aos-delay="400">
-              <div class="icon"><i class="bi bi-bar-chart-line"></i></div>
-              <h4><a href="{% url 'view_sleep_patterns' %}">Sleep Cycle</a></h4>
-              <p>Visualize your sleep cycle patterns with our informative and user-friendly graph.</p>
-            </div>
-          </div>
-
+      <div class="col-md-6 d-flex align-items-stretch">
+        <div class="icon-box" data-aos="zoom-in" data-aos-delay="400">
+          <div class="icon"><i class="bi bi-chat-heart"></i></div>
+          <h4><a href="{% url 'chatbot_view' %}">DR. AI</a></h4>
+          <p>Empower your health journey with our AI chatbot aka DR. AI, your 24/7 source of personalized health
+            insights.</p>
         </div>
       </div>
+
+      <div class="col-md-6 d-flex align-items-stretch mt-4">
+        <div class="icon-box" data-aos="zoom-in" data-aos-delay="200">
+          <div class="icon"><i class="bi bi-clipboard2-heart"></i></div>
+          <h4><a href="{% url 'index' %}">Calorie Tracking</a></h4>
+          <p>Effortlessly monitor your calorie intake and expenditure with our intuitive tracking system.</p>
+        </div>
+      </div>
+
+      <div class="col-md-6 d-flex align-items-stretch mt-4">
+        <div class="icon-box" data-aos="zoom-in" data-aos-delay="400">
+          <div class="icon"><i class="bi bi-bar-chart-line"></i></div>
+          <h4><a href="{% url 'view_sleep_patterns' %}">Sleep Cycle</a></h4>
+          <p>Visualize your sleep cycle patterns with our informative and user-friendly graph.</p>
+        </div>
+      </div>
+
     </div>
-
   </div>
+</div>
+
+</div>
 </section>
 {% endblock %}

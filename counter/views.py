@@ -1,8 +1,5 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-
-# Create your views here.
-
 @login_required
 def home(request):
     
@@ -22,23 +19,6 @@ def home(request):
         return render(request, 'home.html', {'api': api})
     else:
         return render(request, 'home.html', {'query': 'Enter a valid query'})
-
-import requests
-from django.shortcuts import render
-
-@login_required
-def activity_calories(request):
-    activity = 'cycling'
-    api_url = 'https://api.api-ninjas.com/v1/caloriesburned?activity={}'.format(activity)
-    response = requests.get(api_url, headers={'X-Api-Key': 'DWuCI3z4Qakky7/FdzHJHg==yRSlXi5uPF9CUECz'})
-
-    if response.status_code == requests.codes.ok:
-        data = response.json()
-        print(data)
-    else:
-        data = []
-
-    return render(request, 'activity_calories.html', {'activity_data': data})
 
 from django.shortcuts import render
 import json
@@ -76,22 +56,3 @@ def calorie_calculator(request):
 
     return render(request, 'calorie_calculator.html', {'total_calories': total_calories})
 
-from django.shortcuts import render
-import requests
-import json
-
-@login_required
-def exercise_nutrition(request):
-    if request.method == 'POST':
-        exercise_name = request.POST.get('exercise_name')
-        api_url = f'https://api.api-ninjas.com/v1/exercises?muscle={exercise_name}'
-        response = requests.get(api_url, headers={'X-Api-Key': 'DWuCI3z4Qakky7/FdzHJHg==yRSlXi5uPF9CUECz'})
-
-        if response.status_code == requests.codes.ok:
-            api_data = json.loads(response.content.decode('utf-8'))
-            exercise_info = api_data[0] if api_data else None
-        else:
-            exercise_info = None
-
-        return render(request, 'exercise_nutrition.html', {'exercise_info': exercise_info})
-    return render(request, 'exercise_nutrition.html')

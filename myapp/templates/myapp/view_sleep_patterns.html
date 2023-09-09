@@ -21,7 +21,7 @@
 <div id="sleep-patterns-chart"></div>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script>
-    // Sleep pattern data (replace with your data)
+
     var sleepPatternData = [
     {% for pattern in sleep_patterns %}
         {
@@ -32,8 +32,6 @@
     {% endfor %}
 ];
 
-// Create arrays to hold x and y data
-// Create arrays to hold x and y data
 var sleepDurations = sleepPatternData.map(function(item) {
             var startTime = new Date(item.start_time);
             var endTime = new Date(item.end_time);
@@ -42,7 +40,7 @@ var sleepDurations = sleepPatternData.map(function(item) {
             return durationInHours;
         });
 
-        // Get the canvas element
+        
         var ctx = document.getElementById('sleep-quality-chart').getContext('2d');
 
         // Create the bar chart using Chart.js
@@ -59,8 +57,7 @@ var sleepDurations = sleepPatternData.map(function(item) {
                         'rgba(0, 128, 0, 0.7)',   // Excellent (Green)
                         'rgba(255, 255, 0, 0.7)', // Very Good (Yellow)
                         'rgba(255, 165, 0, 0.7)'  // Good (Orange)
-                        // Add more colors for other qualities
-                    ],
+                        
                 }]
             },
             options: {

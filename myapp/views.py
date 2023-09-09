@@ -205,9 +205,6 @@ def generate_report(request):
         'bmi':bmi
     })
 
-def testing(request):
-    return render(request,'myapp/testt.html')
-
 
 def generate_content(prompt):
     openai.api_key = "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"

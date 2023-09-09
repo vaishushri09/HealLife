@@ -1,0 +1,186 @@
+{% extends 'base3.html' %}
+{% load static %}
+{% block content %}
+<style>
+     .row {
+        text-align: left;
+    }
+    .main-content{
+        width: 55%;
+        border-radius: 20px;
+        box-shadow: 0 5px 5px rgba(0,0,0,.4);
+        margin: 5em auto;
+        display: flex;
+    }
+    .company__info{
+        background-color: #daf1de;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: #fff;
+    }
+    .fa-android{
+        font-size:3em;
+    }
+    @media screen and (max-width: 640px) {
+        .main-content{width: 90%;}
+        .company__info{
+            display: none;
+        }
+        .login_form{
+            border-top-left-radius:20px;
+            border-bottom-left-radius:20px;
+        }
+    }
+    @media screen and (min-width: 642px) and (max-width:800px){
+        .main-content{width: 70%;}
+    }
+    .row > h2{
+        color:rgb(0, 98, 83);
+    }
+    .login_form{
+        background-color: #fff;
+        border-top-right-radius:20px;
+        border-bottom-right-radius:20px;
+        border-top:1px solid #ccc;
+        border-right:1px solid #ccc;
+    }
+    form{
+        padding: 0 2em;
+    }
+    .form__input{
+        max-width: 100%;
+        border:0px solid transparent;
+        border-radius: 0;
+        border-bottom: 1px solid #aaa;
+        padding: 1em .5em .5em;
+        padding-left: 2em;
+        outline:none;
+        margin:1.5em auto;
+        transition: all .5s ease;
+    }
+    .form__input:focus{
+        border-bottom-color: rgb(0, 98, 83);
+        box-shadow: 0 0 5px rgba(0,80,80,.4); 
+        border-radius: 4px;
+    }
+    .form-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: auto;
+    }
+
+    .form-group label {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    .form-group .form__input {
+        flex: 2;
+    }
+    .btn{
+        transition: all .5s ease;
+        width: 70%;
+        border-radius: 30px;
+        color:rgb(0, 98, 83);
+        font-weight: 600;
+        background-color: #fff;
+        border: 1px solid rgb(0, 98, 83);
+        margin-top: 1.5em;
+        margin-bottom: 1em;
+    }
+    .btn:hover, .btn:focus{
+        background-color: rgb(0, 98, 83);
+        color:#fff;
+    }
+    .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color:  rgb(0, 98, 83);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+        }
+</style>
+
+<div class="body">
+    <!-- Main Content -->
+    <div class="container-fluid">
+        <div class="row main-content bg-success text-center">
+            <div class="col-md-4 text-center company__info">
+                <span class="company__logo"><h2><span class="fa fa-android"></span></h2></span>
+                <img src="{% static 'assets/img/healthcare-removebg.png' %}" alt="heallife Logo">
+            </div>
+            <div class="col-md-8 col-xs-12 col-sm-12 login_form ">
+                <div class="container-fluid">
+                    <div class="row" style="margin-top: 10px;">
+                        <h2 style="margin-left: 10rem;"><b>Register</b></h2>
+                    </div>
+                    <div class="row" style="margin-right: 10px;">
+                        <form method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                <label for="{{ field.id_for_label }}" >{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div class="error">
+                        {% for error in field.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <button type="submit">Register</button>
+            <div class="row">
+                <p>Already have an account! <a href="{% url 'login' %}" >Login</a></p>
+            </div>
+        </form>
+    </div> 
+    </div>
+</div>
+{% endblock %}

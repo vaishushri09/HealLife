@@ -1,0 +1,21 @@
+<!-- posts/templates/posts/generate_post.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpenAI Content Generation</title>
+</head>
+<body>
+    <h1>Generate Content with OpenAI</h1>
+    <form method="post">
+        {% csrf_token %}
+        <textarea name="prompt" rows="4" cols="50" placeholder="Enter your prompt here..."></textarea>
+        <button type="submit">Generate Content</button>
+    </form>
+
+    {% if generated_content %}
+    <h2>Generated Content:</h2>
+    <p>{{ generated_content }}</p>
+    {% endif %}
+</body>
+</html>

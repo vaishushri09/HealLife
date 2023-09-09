@@ -23,66 +23,72 @@
 <script>
     // Sleep pattern data (replace with your data)
     var sleepPatternData = [
-        {% for pattern in sleep_patterns %}
-            {
-                'start_time': "{{ pattern.start_time|date:'Y-m-d H:i' }}",
-                'end_time': "{{ pattern.end_time|date:'Y-m-d H:i' }}",
-                'quality': "{{ pattern.get_quality_rating_display }}",
-            },
-        {% endfor %}
-    ];
-
-    // Create arrays to hold x and y data
-    var sleepTimes = [];
-    var sleepQuality = [];
-    var sleepQualityColors = [];
-
-    // Extract data from sleepPatternData
-    for (var i = 0; i < sleepPatternData.length; i++) {
-        sleepTimes.push(sleepPatternData[i].start_time);
-        sleepQuality.push(sleepPatternData[i].quality);
-        if (sleepPatternData[i].quality === 1) {
-            sleepQualityColors.push('rgba(255, 0, 0, 0.7)'); // Poor (Red)
-        } else if (sleepPatternData[i].quality === 2) {
-            sleepQualityColors.push('rgba(255, 69, 0, 0.9)'); // Fair (Orange-Red)
-        } else if (sleepPatternData[i].quality === 3) {
-            sleepQualityColors.push('rgba(255, 165, 0, 0.7)'); // Good (Orange)
-        } else if (sleepPatternData[i].quality === 4) {
-            sleepQualityColors.push('rgba(255, 255, 0, 0.7)'); // Very Good (Yellow)
-        } else {
-            sleepQualityColors.push('rgba(255, 175, 0, 0.8)'); // Excellent (Green)
-        }
-
-    }
-
-    // Define colors based on sleep quality
-
-
-    // Map sleep quality to colors
-
-
-    // Create the bar chart
-    var data = [{
-        x: sleepTimes,
-        y: sleepQuality,
-        type: 'bar',
-        marker: {
-            color: sleepQualityColors
-        }
-    }];
-
-    var layout = {
-        title: 'Sleep Patterns',
-        xaxis: {
-            title: 'Sleep Time',
+    {% for pattern in sleep_patterns %}
+        {
+            'start_time': "{{ pattern.start_time|date:'Y-m-d H:i' }}",
+            'end_time': "{{ pattern.end_time|date:'Y-m-d H:i' }}",
+            'quality': "{{ pattern.get_quality_rating_display }}",
         },
-        yaxis: {
-            title: 'Sleep Quality',
-        }
-    };
+    {% endfor %}
+];
 
-    // Create the Plotly chart
-    Plotly.newPlot('sleep-patterns-chart', data, layout);
+// Create arrays to hold x and y data
+// Create arrays to hold x and y data
+var sleepDurations = sleepPatternData.map(function(item) {
+            var startTime = new Date(item.start_time);
+            var endTime = new Date(item.end_time);
+            var durationInMilliseconds = endTime - startTime;
+            var durationInHours = durationInMilliseconds / (1000 * 60 * 60); // Convert to hours
+            return durationInHours;
+        });
+
+        // Get the canvas element
+        var ctx = document.getElementById('sleep-quality-chart').getContext('2d');
+
+        // Create the bar chart using Chart.js
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: sleepPatternData.map(function(item) {
+                    return item.start_time;
+                }),
+                datasets: [{
+                    label: 'Hours Slept',
+                    data: sleepDurations,
+                    backgroundColor: [
+                        'rgba(0, 128, 0, 0.7)',   // Excellent (Green)
+                        'rgba(255, 255, 0, 0.7)', // Very Good (Yellow)
+                        'rgba(255, 165, 0, 0.7)'  // Good (Orange)
+                        // Add more colors for other qualities
+                    ],
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Sleep Patterns',
+                    fontSize: 18
+                },
+                scales: {
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Sleep Time'
+                        }
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Hours Slept'
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1,
+                        }
+                    }]
+                }
+            }
+        });
 </script>
 
 {% endblock %}

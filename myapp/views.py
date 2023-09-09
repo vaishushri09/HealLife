@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Food, Consume
 from health_app.models import UserProfile
+
 # Create your views here.
 
 
@@ -143,6 +144,9 @@ def suggest_sleep_cycle(request):
     
 def tryi(request):
     return render(request,"myapp/try.html")
+def calculate_bmi(a,b):
+    bmi=b*10000/(a*a)
+    return bmi
 
 from django.shortcuts import render
 from .models import Consume, SleepPattern
@@ -151,10 +155,11 @@ from health_app.models import UserProfile
 def generate_report(request):
     # Get the user's profile data
     user_profile = UserProfile.objects.get(user=request.user)
+    bmi = calculate_bmi(user_profile.height_cm, user_profile.weight_kg)
 
     # Get today's date
     today = date.today()
-
+    openai.api_key = "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"
     # Get the user's calorie intake data for today
     calorie_intake_today = Consume.objects.filter(user=request.user, date=today).values_list('food_consumed__calories', flat=True)
     total_calories_today = sum(calorie_intake_today)
@@ -197,8 +202,63 @@ def generate_report(request):
         'pie_chart_data': pie_chart_data,
         'sleep_patterns':sleep_patterns,
         'suggestions':suggestions,
+        'bmi':bmi
     })
 
+def testing(request):
+    return render(request,'myapp/testt.html')
 
 
+def generate_content(prompt):
+    openai.api_key = "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"
+    response = openai.Completion.create(
+        engine="text-davinci-002",  
+        prompt=prompt,
+        max_tokens=100,  
+        temperature=0.7,  
+        n=1
+    )
 
+    return response.choices[0].text
+
+def generate_post(request):
+    generated_content = None
+
+    if request.method == 'POST':
+        prompt = request.POST.get('prompt', '')
+        generated_content = generate_content(prompt)
+
+    return render(request, 'myapp/generate_post.html', {'generated_content': generated_content})
+
+# posts/views.py
+
+
+from .models import Post
+from .forms import PostForm
+
+
+def create_post(request):
+    generated_content = None
+    user_profile = UserProfile.objects.get(user=request.user)
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+
+            # Generate content based on the user's prompt
+            generated_content = generate_content(form.cleaned_data['prompt'])
+            post.prompt = form.cleaned_data['prompt']
+            post.content = generated_content  # Assign the generated content to the post
+            post.save()
+
+            return redirect('post_list')
+    else:
+        form = PostForm()
+
+    return render(request, 'myapp/create_post.html', {'form': form, 'generated_content': generated_content,'user_profile': user_profile})
+
+def post_list(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    posts = Post.objects.all().order_by('-created_at')
+    return render(request, 'myapp/post_list.html', {'posts': posts,'user_profile': user_profile})

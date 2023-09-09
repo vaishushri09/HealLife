@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Your head content here -->
+</head>
+<body>
+    <div class="container">
+        <h1>Exercise Nutrition Information</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label for="exercise_name">Enter exercise name (e.g., biceps):</label>
+            <input type="text" id="exercise_name" name="exercise_name" required>
+            <button type="submit">Get Nutrition Info</button>
+        </form>
+
+        {% if exercise_info %}
+            <h2>{{ exercise_info.name | capfirst }} Nutrition Info</h2>
+            <p>Calories: {{ exercise_info.calories }}</p>
+            <!-- Add more nutritional info here -->
+
+            <!-- Add Chart.js code here -->
+            <canvas id="exerciseChart" width="400" height="200"></canvas>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                const ctx = document.getElementById('exerciseChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Carbohydrates', 'Cholesterol', 'Saturated Fat', 'Total Fat', 'Fiber Content'],
+                        datasets: [{
+                            label: 'Nutritional Values',
+                            data: [
+                                {{ exercise_info.carbohydrates_g }},
+                                {{ exercise_info.cholesterol_mg }},
+                                {{ exercise_info.fat_saturated_g }},
+                                {{ exercise_info.fat_total_g }},
+                                {{ exercise_info.fiber_g }}
+                            ],
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+        {% endif %}
+    </div>
+</body>
+</html>

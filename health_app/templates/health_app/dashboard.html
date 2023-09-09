@@ -1,0 +1,21 @@
+<!-- health_app/templates/health_app/dashboard.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Health Dashboard</title>
+</head>
+<body>
+    <h1>Health Dashboard</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ health_form.as_p }}
+        <button type="submit" name="health_form_submit">Submit Health Info</button>
+    </form>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ diet_form.as_p }}
+        <button type="submit" name="diet_form_submit">Submit Diet Plan</button>
+    </form>
+</body>
+</html>

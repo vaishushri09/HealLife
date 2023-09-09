@@ -1,0 +1,249 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+    <style>
+        .card {
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+            transition: transform 0.2s; /* Add smooth transition on hover */
+        }
+
+        .card:hover {
+            box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+            transform: scale(1.03); /* Scale up the card on hover */
+        }
+    </style>
+    {% block content %}
+
+<div class="body" onload="displayWishlist(), calculateTotals()">
+    <h3>Your workouts</h3>
+    <div id="wishlistContainer" style="margin-top: 100px;" >
+        <!-- Wishlist data will be displayed here -->
+        <!-- Display total calories burned and total time duration -->
+
+
+    </div>
+    <div>
+        <p>Total Calories Burned: <span id="totalCalories"></span></p>
+        <p>Total Time Duration (minutes): <span id="totalDuration"></span></p>
+    </div>
+    <div class="container text-center">
+        <h1 class="my-5">Workout</h1>
+        
+        <div class="row ">
+            <div class="card col-md-3 mb-4" style="width: ; margin: 0 40px;">
+                <div class="card-body">
+                    <video class="img-fluid"  preload="none"
+                        style="background: transparent  url('https://cdn-icons-png.flaticon.com/512/10306/10306585.png') 50% 50% / fit no-repeat;"
+                        autoplay="autoplay" loop="true" muted="muted" playsinline="">
+                        <source src="https://cdn-icons-mp4.flaticon.com/512/10306/10306585.mp4" type="video/mp4">
+                    </video>
+                    <h5 class="card-title">RUNNING</h5>
+                    <p class="card-text">Total calories burned:143
+                        Duration minute:15
+                    </p>
+                    <a href="#" class="btn btn-primary" onclick="addToWishlist('card1', 'RUNNING', 143)">Add exercise</a>
+                </div>
+            </div>
+            <div class="card col-md-3 mb-4" style="width: ; margin: 0 40px;">
+                <div class="card-body">
+                    <video class="img-fluid" preload="none"
+                        style="background: transparent  url('https://cdn-icons-png.flaticon.com/512/10306/10306562.png') 50% 50% / fit no-repeat;"
+                        autoplay="autoplay" loop="true" muted="muted" playsinline="">
+                        <source src="https://cdn-icons-mp4.flaticon.com/512/10306/10306562.mp4" type="video/mp4">
+                    </video>
+                    <h5 class="card-title">CYCLING</h5>
+                    <p class="card-text">Total calories burned:135
+                        Duration minute:15</p>
+                        <a href="#" class="btn btn-primary" onclick="addToWishlist('card2', 'CYCLING', 135)">Add exercise</a>
+                </div>
+            </div>
+            <div class="card col-md-3 mb-4" style="width: ; margin: 0 40px;">
+                <div class="card-body">
+                    <video class="img-fluid" preload="none"
+                        style="background: transparent  url('https://cdn-icons-png.flaticon.com/512/8756/8756202.png') 50% 50% / fit no-repeat;"
+                        autoplay="autoplay" loop="true" muted="muted" playsinline="">
+                        <source src="https://cdn-icons-mp4.flaticon.com/512/8756/8756202.mp4" type="video/mp4">
+                    </video>
+                    <h5 class="card-title">ZUMBA</h5>
+                    <p class="card-text">Total calories burned:191
+                        Duration minute:15</p>
+                        <a href="#" class="btn btn-primary" onclick="addToWishlist('card3', 'ZUMBA', 191)">Add exercise</a>
+                </div>
+            </div>
+            <div class="card col-md-3 mb-4" style="width: ; margin: 0 40px;">
+                <div class="card-body">
+                    <video class="img-fluid" preload="none"
+                        style="background: transparent  url('https://cdn-icons-png.flaticon.com/512/8756/8756206.png') 50% 50% / fit no-repeat;"
+                        autoplay="autoplay" loop="true" muted="muted" playsinline="">
+                        <source src="https://cdn-icons-mp4.flaticon.com/512/8756/8756206.mp4" type="video/mp4">
+                    </video>
+                    <h5 class="card-title">DUMBELS</h5>
+                    <p class="card-text">Total calories burned:133
+                        Duration minute:15</p>
+                    <a href="#" class="btn btn-primary" onclick="addToWishlist('card4', 'DUMBELS', 133)">Add exercise</a>
+                </div>
+            </div>
+            <div class="card col-md-3 mb-4" style="width: ; margin: 0 40px;">
+                <div class="card-body">
+                    <video class="img-fluid" preload="none"
+                        style="background: transparent  url('https://cdn-icons-png.flaticon.com/512/8756/8756192.png') 50% 50% / fit no-repeat;"
+                        autoplay="autoplay" loop="true" muted="muted" playsinline="">
+                        <source src="https://cdn-icons-mp4.flaticon.com/512/8756/8756192.mp4" type="video/mp4">
+                    </video>
+                    <h5 class="card-title">PULL UPS</h5>
+                    <p class="card-text">Total calories burned:135
+                        Duration minute:15</p>
+                    <a href="#" class="btn btn-primary" onclick="addToWishlist('card5', 'PULL UPS', 139)">Add exercise</a>
+                </div>
+            </div>
+            <div class="card col-md-3 mb-4" style="width: ; margin: 0 40px;">
+                <div class="card-body">
+                    <video class="img-fluid" preload="none"
+                        style="background: transparent  url('https://cdn-icons-png.flaticon.com/512/8756/8756219.png') 50% 50% / fit no-repeat;"
+                        autoplay="autoplay" loop="true" muted="muted" playsinline="">
+                        <source src="https://cdn-icons-mp4.flaticon.com/512/8756/8756219.mp4" type="video/mp4">
+                    </video>
+                    <h5 class="card-title">BOXING</h5>
+                    <p class="card-text">Total calories burned:204
+                        Duration minute:15</p>
+                    <a href="#" class="btn btn-primary" onclick="addToWishlist('card6', 'BOXING', 204)">Add exercise</a>
+                </div>
+            </div>
+            <div class="card col-md-3 mb-4" style="width: ; margin: 0 40px;">
+                <div class="card-body">
+                    <div class="main-icon-without-slide pd-lv4 icon-png-container " data-type="img"
+                        data-png="https://cdn-icons-png.flaticon.com/512/1349/1349992.png" data-premium="0"
+                        data-id="1349992">
+
+                        <img src="https://cdn-icons-png.flaticon.com/512/1349/1349992.png" class="img-fluid"
+                            alt="Skip rope free icon" title="Skip rope free icon" style="margin: 16px 0;">
+                    </div>
+                    <h5 class="card-title">SKIPPING</h5>
+                    <p class="card-text">Total calories burned:255
+                        Duration minute:15</p>
+                    <a href="#" class="btn btn-primary" onclick="addToWishlist('card7', 'SKIPPING',255)">Add exercise</a>
+                </div>
+            </div>
+            <div class="card col-md-3 mb-4" style="width: ; margin: 0 40px;">
+                <div class="card-body">
+                    <div class="main-icon-without-slide pd-lv4 icon-png-container " data-type="img"
+                        data-png="https://cdn-icons-png.flaticon.com/512/3043/3043184.png" data-premium="0"
+                        data-id="3043184">
+
+                        <img src="https://cdn-icons-png.flaticon.com/512/3043/3043184.png" class="img-fluid"
+                            alt="Workout free icon" title="Workout free icon" style="margin: 16px 0;">
+                    </div>
+                    <h5 class="card-title">PLANK</h5>
+                    <p class="card-text">Total calories burned:120
+                        Duration minute:15</p>
+                    <a href="#" class="btn btn-primary" onclick="addToWishlist('card8', 'PLANK', 120)">Add exercise</a>
+                </div>
+            </div>
+            <div class="card col-md-3 mb-4" style="width: ; margin: 0 40px;">
+                <div class="card-body">
+                    <div class="main-icon-without-slide pd-lv4 icon-png-container " data-type="img"
+                        data-png="https://cdn-icons-png.flaticon.com/512/384/384159.png" data-premium="0"
+                        data-id="384159">
+
+                        <img src="https://cdn-icons-png.flaticon.com/512/384/384159.png" class="img-fluid"
+                            alt="Exercises free icon" title="Exercises free icon" style="margin: 16px 0;">
+                    </div>
+                    <h5 class="card-title">CRUNCHIES</h5>
+                    <p class="card-text">Total calories burned:107
+                        Duration minute:15</p>
+                    <a href="#" class="btn btn-primary" onclick="addToWishlist('card9', 'CRUNCHIES',107)">Add exercise</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add Bootstrap JS and jQuery links here -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function addToWishlist(cardId, name, caloriesBurned) {
+            const exercise = {
+                cardId: cardId,
+                name: name,
+                caloriesBurned: caloriesBurned,
+                durationMinutes: 15 // You can modify this as needed
+            };
+
+            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+            wishlist.push(exercise);
+
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+
+            alert("Exercise added to wishlist!");
+
+            // Notify other windows that the data has changed
+            broadcastWishlistChange();
+
+            displayWishlist(); // Update the displayed wishlist
+        }
+
+        function displayWishlist() {
+            console.log("Displaying wishlist...");
+
+            const wishlistData = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+            const wishlistContainer = document.getElementById('wishlistContainer');
+            wishlistContainer.innerHTML = ''; // Clear the previous content
+
+            if (wishlistData.length === 0) {
+                wishlistContainer.innerHTML = '<p>Your wishlist is empty.</p>';
+            } else {
+                const ul = document.createElement('ul');
+                wishlistData.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = `${item.name} - Calories Burned: ${item.caloriesBurned}`;
+                    ul.appendChild(li);
+                });
+                wishlistContainer.appendChild(ul);
+            }
+        }
+
+        function broadcastWishlistChange() {
+            // Create a custom event to notify other windows
+            const event = new Event('wishlistChanged');
+
+            // Dispatch the event
+            window.dispatchEvent(event);
+        }
+
+        // Listen for the custom event in other windows
+        window.addEventListener('wishlistChanged', function (event) {
+            // Handle the event (e.g., update the wishlist in this window)
+            displayWishlist();
+        });
+
+        // Function to calculate the total calories burned and total time duration
+function calculateTotals() {
+    const wishlistData = JSON.parse(localStorage.getItem('wishlist')) || [];
+    let totalCaloriesBurned = 0;
+    let totalTimeDuration = 0;
+
+    wishlistData.forEach(item => {
+        totalCaloriesBurned += item.caloriesBurned;
+        totalTimeDuration += item.durationMinutes;
+    });
+
+    return { totalCaloriesBurned, totalTimeDuration };
+}
+
+// Function to display the total calories burned and total time duration
+function displayTotals() {
+    const { totalCaloriesBurned, totalTimeDuration } = calculateTotals();
+    document.getElementById('totalCalories').textContent = totalCaloriesBurned;
+    document.getElementById('totalDuration').textContent = totalTimeDuration;
+}
+
+// Call the displayTotals function to update the totals on page load
+displayTotals();
+
+// The rest of your existing script...
+
+    </script>
+</div>
+{% endblock %}

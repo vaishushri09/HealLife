@@ -1,0 +1,62 @@
+{% extends 'base3.html' %}
+{% load static %}
+
+<style>
+body {
+    background-color: #f4f4f4;
+}
+
+/* Style the heading */
+h1 {
+    color: #333;
+}
+
+/* Style the list items */
+.list-group-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+/* Style the "Create a Post" button */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+</style>
+{% block content %}
+    <div class="container">
+        <h1 class="mt-4">Post List</h1>
+
+        {% if posts %}
+            <ul class="list-group mt-4">
+                {% for post in posts %}
+                    <li class="list-group-item">
+                        <p class="font-weight-bold">Posted by {{ post.user.username }}</p>
+                        <p class="font-weight-bold">Prompt:</p>
+                        <p>{{ post.prompt }}</p>
+                        <p class="font-weight-bold">Generated Content:</p>
+                        <p>{{ post.content }}</p>
+                        <p class="font-weight-bold">Posted on: {{ post.created_at }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="mt-4">No posts available.</p>
+        {% endif %}
+
+        <a class="btn btn-primary mt-4" href="{% url 'create_post' %}">Create a Post</a>
+    </div>
+
+    <!-- Include Bootstrap JS and jQuery for Bootstrap functionality -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}
+

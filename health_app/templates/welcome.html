@@ -1,0 +1,230 @@
+{% extends 'base1.html' %}{% load static %}
+{% block css %}
+{% endblock %}
+
+
+{% block content %}
+<!-- ======= Hero Section ======= -->
+
+<section id="hero" class="d-flex align-items-center"
+  style="background: url({% static 'assets/img/hero-bg1.jpg' %}) center center;">
+  <div class="container text-center position-relative" data-aos="fade-in" data-aos-delay="200">
+    <h1>Welcome to HealLife</h1>
+    <h2>Your all-in-one destination for seamless health tracking and fitness management.</h2>
+    <a href="{% url 'register' %}" class="btn-get-started scrollto">Get Started</a>
+  </div>
+</section><!-- End Hero -->
+
+<main id="main">
+</main>
+
+<!-- ======= About Section ======= -->
+
+
+<section id="about" class="about">
+  <div class="container">
+
+    <div id="carouselExample" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+
+        <!-- First Carousel Item -->
+        <div class="carousel-item active">
+          <div class="row content">
+            <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+              <h2 style="font-family: Raleway, sans-serif; ">1. Why is good health essential for a fulfilling life?</h2>
+            </div>
+            <div class="col-lg-6 pt-4 pt-lg-0" data-aos="fade-left" data-aos-delay="200">
+              <h3>
+                Good health is a cornerstone of a fulfilling life, influencing our ability to enjoy everyday activities,
+                pursue our goals, and connect with others. When we prioritize our health, we invest in a better quality
+                of
+                life, as it enables us to engage in physical, mental, and emotional experiences to the fullest. It's the
+                foundation for overall well-being, allowing us to navigate challenges and opportunities with resilience.
+              </h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Second Carousel Item -->
+        <div class="carousel-item">
+          <div class="row content">
+            <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+              <h2>2. How does calorie tracking optimize dietary balance?</h2>
+            </div>
+            <div class="col-lg-6 pt-4 pt-lg-0" data-aos="fade-left" data-aos-delay="200">
+              <h3>
+                Tracking calories contributes to optimizing nutritional balance in your diet by allowing you to
+                distribute your calorie budget across essential macronutrients—carbohydrates, proteins, and fats. This
+                ensures that you're getting the right proportions of nutrients needed for optimal bodily function,
+                energy, and muscle maintenance.
+              </h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- fourth -->
+        <div class="carousel-item">
+          <div class="row content">
+            <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+              <h2>
+                4. Why is understanding your sleep cycle important and how does it impact your health?</h2>
+            </div>
+            <div class="col-lg-6 pt-4 pt-lg-0" data-aos="fade-left" data-aos-delay="200">
+              <h3>
+                Understanding your sleep cycle is essential for optimal health, as it directly impacts your well-being.
+                Tracking your sleep cycle helps you gauge sleep quality and duration, aiding adjustments for better
+                habits. Adequate sleep enhances immune function, cognitive performance, mood, and weight management.
+                Monitoring your cycle enables tailored improvements, leading to better health outcomes and a higher
+                quality of life.
+              </h3>
+            </div>
+          </div>
+        </div>
+        <!--Fifth -->
+        <div class="carousel-item">
+          <div class="row content">
+            <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+              <h2>
+                5. How can an AI health chatbot revolutionize your well-being?</h2>
+            </div>
+            <div class="col-lg-6 pt-4 pt-lg-0" data-aos="fade-left" data-aos-delay="200">
+              <h3>
+                An AI health chatbot can revolutionize your well-being by providing personalized and accessible health
+                insights around the clock. This advanced technology utilizes data-driven algorithms to analyze your
+                health information and offer tailored advice on various aspects, such as nutrition, fitness, sleep, and
+                stress management. With its round-the-clock availability, the chatbot empowers you to make informed
+                decisions about your health without waiting for appointments or expert guidance. This convenience and
+                continuous support help you proactively manage your wellness, making healthier choices that align with
+                your individual needs and goals.
+              </h3>
+            </div>
+          </div>
+        </div>
+       
+        <!-- Add more carousel items as needed -->
+
+      </div>
+
+      <!-- Carousel Controls -->
+      <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+<!-- End About Section -->
+<!-- ======= Services Section ======= -->
+<section id="services" class="services section-bg">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="section-title" data-aos="fade-right">
+          <h2>Our Goal</h2>
+          <p>Our all-in-one platform cares for your well-being, managing your health profile, sleep cycle, workout
+            routines, and calorie burn for a balanced lifestyle.</p>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="row">
+          <div class="col-md-6 d-flex align-items-stretch">
+            <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
+              <div class="icon"><i class="bi bi-heart-pulse"></i></div>
+              <h4><a href="">Health Profile</a></h4>
+              <p>Introducing your personalized health profile – a comprehensive snapshot of your well-being journey.</p>
+            </div>
+          </div>
+          <div class="col-md-6 d-flex align-items-stretch">
+            <div class="icon-box" data-aos="zoom-in" data-aos-delay="400">
+              <div class="icon"><i class="bi bi-chat-heart"></i></div>
+              <h4><a href="{% url 'chatbot_view' %}">DR. AI</a></h4>
+              <p>Empower your health journey with our AI chatbot aka DR. AI, your 24/7 source of personalized health
+                insights.</p>
+            </div>
+          </div>
+          <div class="col-md-6 d-flex align-items-stretch mt-4 ">
+            <div class="icon-box" data-aos="zoom-in" data-aos-delay="200">
+              <div class="icon"><i class="bi bi-clipboard2-heart"></i></div>
+              <h4><a href="">Calorie Tracking</a></h4>
+              <p>Effortlessly monitor your calorie intake and expenditure with our intuitive tracking system.</p>
+            </div>
+          </div>
+          <div class="col-md-6 d-flex align-items-stretch mt-4">
+            <div class="icon-box" data-aos="zoom-in" data-aos-delay="400">
+              <div class="icon"><i class="bi bi-bar-chart-line"></i></div>
+              <h4><a href="">Sleep Cycle</a></h4>
+              <p>Visualize your sleep cycle patterns with our informative and user-friendly graph.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- End Services Section -->
+
+
+<!-- ======= Team Section ======= -->
+<section id="team" class="team">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="section-title" data-aos="fade-right">
+          <h2>Team</h2>
+          <p>The People Who Make It Happen.</p>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="row">
+
+          <div class="col-lg-6">
+            <div class="member" data-aos="zoom-in" data-aos-delay="100">
+              <div class="pic"><img src="{% static 'assets/img/team/team-1.jpg' %}" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Ayush Jha</h4>
+                <span></span>
+                <p></p>
+                <div class="social">
+                  <a href="https://github.com/heyayushhere"><i class="ri-github-fill"></i></a>
+                  <a href="https://www.instagram.com/aj_____28/"><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mt-4 mt-lg-0">
+            <div class="member" data-aos="zoom-in" data-aos-delay="200">
+              <div class="pic"><img src="{% static 'assets/img/team/team-2.jpg' %}" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Vaishnavi Shripati</h4>
+                <span></span>
+                <p></p>
+                <div class="social">
+                  <a href="https://github.com/vaishushri09"><i class="ri-github-fill"></i></a>
+                  <a href="https://www.instagram.com/_.vaishnavi_94/"><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>End Team Section
+
+<!-- ======= Contact Section ======= -->
+
+{% endblock %}

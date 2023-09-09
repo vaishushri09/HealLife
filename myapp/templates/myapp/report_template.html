@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>User Health Report</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <!-- Bootstrap CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Custom CSS for styling -->
     <style>
@@ -12,19 +15,23 @@
             background-color: #f8f9fa;
             font-family: Arial, sans-serif;
         }
+
         .container {
             background-color: #ffffff;
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
         }
+
         h1 {
-            color: #007bff;
+            color: #0c7544;
             text-align: center;
         }
+
         h2 {
             color: #333;
         }
+
         .chart-container {
             margin-top: 20px;
             background-color: #ffffff;
@@ -32,8 +39,156 @@
             padding: 20px;
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
         }
+
+        .bmi {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .bmi-content {
+            text-align: center;
+            width: 60%;
+
+        }
+
+
+        .c-bmi {
+            background-color: hsl(211, 20%, 92%);
+            border-radius: .25rem;
+            box-sizing: border-box;
+            font-family: ui-sans-serif, system-ui, sans-serif;
+            padding: 1rem;
+            max-width: 40rem;
+            width: 100%;
+        }
+
+        .c-bmi fieldset {
+            border: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .c-bmi__group-text {
+            display: none;
+            font-size: small;
+            order: 2;
+            padding: 1rem 0;
+            text-align: left;
+            width: 100%;
+        }
+
+        .c-bmi__groups {
+            border: 0;
+            flex-wrap: wrap;
+            font-size: x-small;
+            padding: 0;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.053);
+        }
+
+        .c-bmi__groups label {
+            display: block;
+            padding: .5rem;
+            position: relative;
+            font-size: 16px;
+            /* Set the default font size */
+            transition: all 0.3s ease;
+        }
+
+        [for="bmi-g0"] {
+            background-color: #bcd0e6;
+        }
+
+        [for="bmi-g1"] {
+            background-color: #b0fbd7;
+        }
+
+        [for="bmi-g2"] {
+            background-color: #f4e4b7;
+        }
+
+        [for="bmi-g3"] {
+            background-color: #fbc1bc;
+        }
+
+
+
+        .c-bmi__label {
+            display: block;
+            font-size: medium;
+            margin: 0 0 1rem 0;
+            position: relative;
+        }
+
+        .c-bmi__label output {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .c-bmi [type="radio"] {
+            display: none;
+        }
+
+        /* RWD */
+        @media (min-width: 600px) {
+            .c-bmi__groups {
+                display: flex;
+            }
+
+            .c-bmi__groups input:checked+label::before {
+                background-color: inherit;
+                clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+                left: 50%;
+                top: -1rem;
+                transform: translateX(-50%);
+                width: 1.5rem;
+            }
+
+            .c-bmi__groups label {
+                flex: 1;
+            }
+
+            [for="bmi-g0"] {
+                border-radius: .25rem 0 0 .25rem;
+            }
+
+            [for="bmi-g3"] {
+                border-radius: 0 .25rem .25rem 0;
+            }
+        }
+
+        .highlighted1 {
+            background-color: #007afc;
+            font-size: 20px;
+            /* Increase font size for highlighted category */
+            font-weight: 1000;
+        }
+
+        .highlighted2 {
+            background-color: #00b82e;
+            font-size: 20px;
+            font-weight: 1000;
+
+        }
+
+        .highlighted3 {
+            background-color: #fdb900;
+            font-size: 20px;
+            font-weight: 1000;
+        }
+
+        .highlighted4 {
+            background-color: #fb0d00;
+            font-size: 20px;
+            font-weight: 1000;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>User Health Report</h1>
@@ -45,35 +200,79 @@
                 <p><strong>Name:</strong> {{ user_profile.name }}</p>
                 <p><strong>Gender:</strong> {{ user_profile.gender }}</p>
                 <p><strong>Blood Group:</strong> {{ user_profile.blood_group }}</p>
-                <button id="download-pdf-button" class="btn btn-primary">Download PDF Report</button>
+                <p><strong>Height:</strong> {{ user_profile.height_cm }}</p>
+                <p><strong>weight:</strong> {{ user_profile.weight_kg }}</p>
+
             </div>
         </div>
+        <div class="bmi" style="margin-bottom: 30px;">
+            <div class="bmi-content">
+                <div class="c-bmi__result">
+                    <h4>Your BMI Is: <h3><b>{{ bmi|floatformat:2 }}</b></h3>
+                    </h4>
+                </div>
+                <div class="c-bmi__groups" readonly>
 
-        <!-- Daily Calorie Intake -->
-        <h2>Daily Calorie Intake</h2>
-        <div class="row">
-            <div class="col-md-4">
-                <p><strong>Total Calories Consumed Today:</strong> {{ total_calories_today }} kcal</p>
-                <p><strong>Remaining Calories:</strong> {{ rem }} kcal</p>
-            </div>
+                    <label for="bmi-g0" class="{% if bmi < 18.5 %} highlighted1 {% endif %}">Underweight</label>
+
+
+                    <label for="bmi-g1"
+                        class="{% if bmi >= 18.5 and bmi < 24.9 %} highlighted2 {% endif %}">Normal</label>
+
+                    <label for="bmi-g2"
+                        class="{% if bmi >= 25 and bmi < 29.9 %} highlighted3 {% endif %}">Pre-obesity</label>
+
+
+                    <label for="bmi-g3" class="{% if bmi >= 29.9 %} highlighted4 {% endif %}">Obese</label>
+                    {% if bmi < 18.5 %}<div class="c-bmi__group-text"> The WHO regards a BMI of less than 18.5 as
+                        underweight and may indicate
+                        malnutrition, an eating disorder, or other health problems.
+                </div>{% endif %}
+                {% if bmi >= 18.5 and bmi < 24.9 %} <div class="c-bmi__group-text">A BMI between 18.5 and 25 is
+                    considered normal and healthy.
+            </div> {% endif %}
+            {% if bmi >= 25 and bmi < 29.9 %}<div class=" c-bmi__group-text ">People who fall into this category may be
+                at risk of developing
+                obesity.<br />This was earlier classified as "overweight".
+        </div>{% endif %}
+        {% if bmi >= 29.9 %} <div class="c-bmi__group-text">People who have BMI equal or over 30 may have obesity, which
+            is defined as an
+            abnormal or excessive accumulation of fat that may harm health.</div> {% endif %}
         </div>
+    </div>
 
-        <!-- Sleep Quality Bar Chart -->
-        <h2>Sleep Quality</h2>
-        <div class="row chart-container">
-            <div class="col-md-6">
-                <div id="sleep-quality-chart"></div>
-            </div>
+    </div>
+
+    <!-- Daily Calorie Intake -->
+    <h2>Daily Calorie Intake</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <p><strong>Total Calories Consumed Today:</strong> {{ total_calories_today }} kcal</p>
+            <p><strong>Remaining Calories:</strong> {{ rem }} kcal</p>
         </div>
+    </div>
+    <canvas id="sleep-quality-chart" width="400" height="200"></canvas>
 
-        <!-- Calorie Intake Pie Chart -->
-        <h2>Calorie Intake</h2>
+
+    <!-- Sleep Quality Bar Chart -->
+    <h2>Sleep Quality</h2>
+    <div class="row chart-container">
+        <div class="col-md-6">
+            <div id="sleep-quality-chart"></div>
+        </div>
+    </div>
+    <div style="width: 50%; margin: 0 auto;">
+        <canvas id="calorie-intake-chart"></canvas>
+    </div>
+
+    <!-- Calorie Intake Pie Chart -->
+    <!-- <h2>Calorie Intake</h2>
         <div class="row chart-container">
             <div class="col-md-6">
                 <div id="calorie-intake-chart"></div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div>
         <h2>Suggestions</h2>
         <p>{{suggestions}}</p>
@@ -91,7 +290,7 @@
         // Function to generate and download the PDF report
         function generatePDFReport() {
             const element = document.querySelector(".container"); // Select the container with all content
-    
+
             // Configure PDF options
             const pdfOptions = {
                 margin: 10,
@@ -100,12 +299,12 @@
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
-    
+
             // Generate the PDF
-            html2pdf().from(element).set(pdfOptions).outputPdf(function(pdf) {
+            html2pdf().from(element).set(pdfOptions).outputPdf(function (pdf) {
                 const blob = new Blob([pdf], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
-    
+
                 // Create a download link and trigger the download
                 const a = document.createElement('a');
                 a.href = url;
@@ -113,106 +312,126 @@
                 a.style.display = 'none';
                 document.body.appendChild(a);
                 a.click();
-    
+
                 // Clean up
                 window.URL.revokeObjectURL(url);
                 document.body.removeChild(a);
             });
         }
-    
+
         // Attach the generatePDFReport function to the button click event
         document.getElementById("download-pdf-button").addEventListener("click", generatePDFReport);
     </script>
-    
+
 
     <!-- Your existing Plotly scripts with improved styling -->
 
 
     <script>
-        
-    // Function to generate the PDF report
-    
-    var sleepPatternData = [
-    {% for pattern in sleep_patterns %}
+
+        // Function to generate the PDF report
+
+        var sleepPatternData = [
+            {% for pattern in sleep_patterns %}
         {
             'start_time': "{{ pattern.start_time|date:'Y-m-d H:i' }}",
-            'end_time': "{{ pattern.end_time|date:'Y-m-d H:i' }}",
-            'quality': "{{ pattern.get_quality_rating_display }}",
+                'end_time': "{{ pattern.end_time|date:'Y-m-d H:i' }}",
+                    'quality': "{{ pattern.get_quality_rating_display }}",
         },
-    {% endfor %}
+        {% endfor %}
 ];
 
-// Create arrays to hold x and y data
-var sleepTimes = [];
-var sleepQuality = [];
-var sleepQualityColors = [];
-var sleepQualityHeights = []; // Added to control bar heights
+        // Create arrays to hold x and y data
+        // Create arrays to hold x and y data
+        var sleepDurations = sleepPatternData.map(function (item) {
+            var startTime = new Date(item.start_time);
+            var endTime = new Date(item.end_time);
+            var durationInMilliseconds = endTime - startTime;
+            var durationInHours = durationInMilliseconds / (1000 * 60 * 60); // Convert to hours
+            return durationInHours;
+        });
 
-// Map sleep quality to colors and heights
-for (var i = 0; i < sleepPatternData.length; i++) {
-    sleepTimes.push(sleepPatternData[i].start_time);
-    sleepQuality.push(sleepPatternData[i].quality);
+        // Get the canvas element
+        var ctx = document.getElementById('sleep-quality-chart').getContext('2d');
 
-    if (sleepPatternData[i].quality === 'Excellent') {
-        sleepQualityColors.push('rgba(0, 128, 0, 0.7)'); // Excellent (Green)
-        sleepQualityHeights.push(5); // Set bar height for Excellent
-    } else if (sleepPatternData[i].quality === 'Very Good') {
-        sleepQualityColors.push('rgba(255, 255, 0, 0.7)'); // Very Good (Yellow)
-        sleepQualityHeights.push(4); // Set bar height for Very Good
-    } else if (sleepPatternData[i].quality === 'Good') {
-        sleepQualityColors.push('rgba(255, 165, 0, 0.7)'); // Good (Orange)
-        sleepQualityHeights.push(3); // Set bar height for Good
-    } else if (sleepPatternData[i].quality === 'Fair') {
-        sleepQualityColors.push('rgba(255, 69, 0, 0.9)'); // Fair (Orange-Red)
-        sleepQualityHeights.push(2); // Set bar height for Fair
-    } else if (sleepPatternData[i].quality === 'Poor') {
-        sleepQualityColors.push('rgba(255, 0, 0, 0.7)'); // Poor (Red)
-        sleepQualityHeights.push(1); // Set bar height for Poor
-    }
-}
-
-// Create the bar chart
-var data = [{
-    x: sleepTimes,
-    y: sleepQualityHeights, // Use sleepQualityHeights for bar heights
-    type: 'bar',
-    marker: {
-        color: sleepQualityColors
-    }
-}];
-
-var layout = {
-    title: 'Sleep Patterns',
-    xaxis: {
-        title: 'Sleep Time',
-    },
-    yaxis: {
-        title: 'Sleep Quality',
-        tickvals: [1, 2, 3, 4, 5], // Set tick values for quality levels
-        ticktext: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'] // Set tick labels
-    }
-};
-
-// Create the Plotly chart
-Plotly.newPlot('sleep-quality-chart', data, layout);
-   
-
-   
-        var calorieIntakeData = [
-            {
-                values: [{{ total_calories_today }}, {{ rem }}],
-                labels: ['Calories Consumed', 'Remaining Calories'],
-                type: 'pie',
-                marker: {
-                    colors: ['rgb(255 108 122 / 74%)', 'rgb(88 244 88 / 80%);']
+        // Create the bar chart using Chart.js
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: sleepPatternData.map(function (item) {
+                    return item.start_time;
+                }),
+                datasets: [{
+                    label: 'Hours Slept',
+                    data: sleepDurations,
+                    backgroundColor: [
+                        'rgba(0, 128, 0, 0.7)',   // Excellent (Green)
+                        'rgba(255, 255, 0, 0.7)', // Very Good (Yellow)
+                        'rgba(255, 165, 0, 0.7)'  // Good (Orange)
+                        // Add more colors for other qualities
+                    ],
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Sleep Patterns',
+                    fontSize: 18
+                },
+                scales: {
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Sleep Time'
+                        }
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Hours Slept'
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1,
+                        }
+                    }]
                 }
             }
-        ];
-        var calorieIntakeLayout = {
-            title: 'Calorie Intake',
-            showlegend: true
+        });
+        var calorieIntakeData = {
+            datasets: [{
+                data: [{{ total_calories_today }}, {{ rem }}],
+            backgroundColor: ['rgb(255, 108, 122, 0.74)', 'rgb(88, 244, 88, 0.80)'],
+            }],
+        labels: ['Calories Consumed', 'Remaining Calories']
         };
-        Plotly.newPlot('calorie-intake-chart', calorieIntakeData, calorieIntakeLayout);
+
+        // Get the canvas element
+        var ctx = document.getElementById('calorie-intake-chart').getContext('2d');
+
+        // Create the pie chart using Chart.js with animation
+        var chart = new Chart(ctx, {
+            type: 'pie',
+            data: calorieIntakeData,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Calorie Intake',
+                    fontSize: 18
+                },
+                animation: {
+                    animateRotate: true, // Add rotation animation
+                    animateScale: true,  // Add scaling animation
+                },
+                responsive: true, // Make the chart responsive
+                maintainAspectRatio: false, // Allow chart size to vary
+                legend: {
+                    position: 'bottom' // Position the legend at the bottom
+                }
+            }
+        });
+
     </script>
 </body>
+
 </html>

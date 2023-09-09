@@ -1,0 +1,23 @@
+<!-- health_app/templates/health_app/dashboard.html -->
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Health Tracker{% endblock %}
+
+{% block content %}
+<!-- <h2>Your Health Dashboard</h2>
+ Display the data fetched from the database 
+ Example: Display a list of exercises 
+<ul>
+    {% for exercise in exercises %}
+    <li>{{ exercise.date }} - {{ exercise.duration_minutes }} minutes</li>
+    {% endfor %}
+</ul>
+dashboard.html -->
+
+
+{% if diet_form.instance.recommendation %}
+    <h3>Diet Recommendation:</h3>
+    <p>{{ diet_form.instance.recommendation }}</p>
+{% endif %}
+
+{% endblock %}

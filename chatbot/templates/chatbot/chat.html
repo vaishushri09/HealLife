@@ -1,0 +1,124 @@
+{% extends 'base4.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    h1{
+        display: flex;
+        justify-content: center;
+    }
+    #chat-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    width: calc(100% - 8rem);
+}
+
+.centered-textarea {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 50px;
+    margin-right: 5px;
+}
+
+.centered-textarea::placeholder {
+    color: #999;
+}
+
+.container-form input[type="submit"] {
+    flex-shrink: 0;
+    background: rgb(101, 26, 172);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    height: 50px;
+}
+
+.container-form input[type="submit"]:hover {
+    background-color: rgb(120, 35, 190);
+}
+
+#conversation {
+    height: 500px;
+    border: 1px solid rgb(69, 38, 99);
+    margin-bottom: 10px;
+    overflow-y: scroll;
+    margin: 20px 4rem;
+    background-color: rgb(36 12 58);
+    width: calc(100% - 8rem);
+}
+
+.user-messages, .chatbot-messages {
+    width: 100%;
+    padding: 10px;
+    font-size: larger;
+    font-family: "Raleway", sans-serif;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.user-messages {
+    background: rgb(83 38 128);
+    color: #fff;
+}
+
+.chatbot-messages {
+    background: rgb(46 23 67);
+    color: #fff;
+}
+
+</style>
+<div class="body" style="margin-top: 100px;">
+    <h1>Chatbot</h1>
+    <div id="conversation">
+        {% for message in conversation %}
+            {% if message.role == 'user' %}
+                <div class="user-messages"><p>You: {{ message.content }}</p></div>
+            {% elif message.role == 'assistant' %}
+                <div class="chatbot-messages">
+                    <p>ChatBot:</p>
+                    <p>{{ message.content }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <form id="chat-form" style="margin: 20px 4rem; max-width: 100%;" method="POST">
+        {% csrf_token %}
+        <div class="container-form" style="margin: 20px 4rem; max-width: 100%;">
+            <textarea rows="3" class="centered-textarea" id="user-input" type="text" name="user_input" placeholder="Your message"></textarea>
+            <input type="submit" value="Send">
+        </div>
+    </form>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatForm = document.getElementById('chat-form');
+            const userInput = document.getElementById('user-input');
+            const conversation = document.getElementById('conversation');
+
+            
+            conversation.scrollTop = conversation.scrollHeight;
+            userInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    chatForm.submit();
+                }
+            });
+            userInput.focus();
+        });
+    </script>
+</div>
+{% endblock %}

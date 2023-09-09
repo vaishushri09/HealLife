@@ -1,0 +1,29 @@
+{% extends 'base3.html' %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px; margin-top: 100px; padding: 20px; background-color: #fff; border-radius: 5px; box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;">
+    <h1 style="text-align: center; margin-bottom: 20px;">View Profile</h1>
+
+    <!-- User Profile Image -->
+
+    <!-- User Profile Information -->
+    <div class="mt-4" style="margin-top: 1.5rem;">
+        <p style="margin: 10px 0;"><strong>Name:</strong> {{ user_profile.name }}</p>
+        <p style="margin: 10px 0;"><strong>Gender:</strong> {{ user_profile.gender }}</p>
+        <p style="margin: 10px 0;"><strong>Contact Number:</strong> {{ user_profile.contact_no }}</p>
+        <p style="margin: 10px 0;"><strong>Blood Group:</strong> {{ user_profile.blood_group }}</p>
+        <p style="margin: 10px 0;"><strong>Weight (kg):</strong> {{ user_profile.weight_kg }}</p>
+        <p style="margin: 10px 0;"><strong>Height (cm):</strong> {{ user_profile.height_cm }}</p>
+        <!-- Add other health-related fields here -->
+    </div>
+    <div class="navbar">
+    <a href="{% url 'edit_profile' %}" class="getstarted" >Edit Profile</a>
+    <a href="{% url 'homepage' %}" class="getstarted" >HOME</a>
+    </div>
+</div>
+
+{% endblock %}

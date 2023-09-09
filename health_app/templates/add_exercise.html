@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- <h2>Add Exercise</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Exercise</button>
+    </form> -->
+
+    <form method="post">
+        {% csrf_token %}
+        {{ health_form.as_p }}
+        <button type="submit" name="health_form_submit">Submit Health Info</button>
+    </form>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ diet_form.as_p }}
+        <button type="submit" name="diet_form_submit">Submit Diet Plan</button>
+    </form>
+{% endblock %}

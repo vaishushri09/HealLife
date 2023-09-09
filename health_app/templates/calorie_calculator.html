@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Calculator</title>
+</head>
+<body>
+    <h1>Food Calorie Calculator</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="foodItems">Enter food items (comma-separated):</label>
+        <input type="text" id="foodItems" name="query" required>
+        <button type="submit">Calculate Calories</button>
+    </form>
+    {% if total_calories is not None %}
+    <h2>Total Calories:</h2>
+    <p>{{ total_calories }}</p>
+    {% endif %}
+</body>
+</html>

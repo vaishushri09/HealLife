@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Calories</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Activity Calories</h1>
+        <table class="activity-table">
+            <thead>
+                <tr>
+                    <th class="table-heading">Image</th>
+                    <th class="table-heading">Name</th>
+                    <th class="table-heading">Calories per Hour</th>
+                    <th class="table-heading">Duration Minutes</th>
+                    <th class="table-heading">Total Calories</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for activity in activity_data %}
+                    <td class="activity-image">
+                        <img src="https://images.unsplash.com/nature" alt="{{ activity.name }}" width="50">
+                    </td>
+                    
+                    <td class="activity-name">{{ activity.name }}</td>
+                    <td class="activity-data">{{ activity.calories_per_hour }}</td>
+                    <td class="activity-data">{{ activity.duration_minutes }}</td>
+                    <td class="activity-data">{{ activity.total_calories }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <canvas id="activityChart" width="400" height="200"></canvas>
+    </div>
+    <script>
+        const activityData = {{activity_data}};
+
+        const labels = activityData.map(activity => activity.name);
+        const caloriesPerHour = activityData.map(activity => activity.calories_per_hour);
+
+        const ctx = document.getElementById('activityChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Calories per Hour',
+                    data: caloriesPerHour,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

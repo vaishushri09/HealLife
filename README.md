@@ -1,6 +1,5 @@
-# HealthTracker App 🏃‍♀️🍏🛌
+# HealLife App 🏃‍♀️🍏🛌
 
-![HealLife Logo](healthcare-removebg.png)
 <img src="healthcare-removebg.png" alt="HealthTracker Logo" width="100" height="100">
 
 

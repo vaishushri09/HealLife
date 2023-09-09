@@ -10,24 +10,15 @@ def register(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save() 
-            print("yess") # Save the user instance
-            UserProfile.objects.create(user=user)  # Create UserProfile linked to the user
+            print("yess") 
+            UserProfile.objects.create(user=user)  
             return redirect('login')  
     else:
         form = UserRegistrationForm()
     return render(request, 'todo_app/register.html', {'form': form})
 
-
 class CustomLoginView(LoginView):
     template_name = 'todo_app/login.html'
-
-from django.shortcuts import render
-from django.shortcuts import render, redirect
-
-from .models import Exercise
-
-
-
 
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -68,9 +59,6 @@ def health_tracker_view(request):
 @login_required
 def responses_view(request):
     return render(request, "health_app/responses.html", {"responses": responses})
-
-
-
 
 @login_required
 def home(request):
@@ -164,9 +152,7 @@ def exercise_nutrition(request):
         return render(request, 'exercise_nutrition.html', {'exercise_info': exercise_info})
     return render(request, 'exercise_nutrition.html')
 
-@login_required
-def workout_view(request):
-    return render(request, 'workout.html')
+
 
 
 def index_view1(request):
@@ -215,68 +201,4 @@ def edit_profile(request):
     return render(request, 'edit_profile.html', {'form': form})
 
 
-import openai
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from health_app.models import UserProfile
 
-def is_health_related(reply):
-    health_keywords = ["health", "medical", "doctor", "symptom", "illness", "wellness", "nutrition", "diet", "exercise", "healthy", "well-being"]  # Add more relevant keywords
-
-    # Check if any of the health-related keywords are present in the reply
-    for keyword in health_keywords:
-        if keyword in reply.lower():
-            return True
-    return False
-
-def chatbot_view(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-    conversation = request.session.get('conversation', [])
-
-    if request.method == 'POST':
-        user_input = request.POST.get('user_input')
-        prompts = []
-        if user_input:
-            conversation.append({"role": "user", "content": user_input})
-
-        
-        prompts.extend(conversation)
-
-       
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=prompts,
-            api_key="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",
-        )
-
-     
-        chatbot_replies = [message['message']['content'] for message in response['choices'] if message['message']['role'] == 'assistant']
-
-       
-        health_advice_replies = []
-        for reply in chatbot_replies:
-            if is_health_related(reply):
-                health_advice_replies.append(reply)
-
-        # If no health-related advice is found, provide a friendly message
-        if not health_advice_replies:
-            health_advice_replies.append("I'm here to provide health-related advice, including topics like diet and nutrition. Feel free to ask any health-related questions.")
-
-        # Handle greetings
-        greetings = ["hey", "hi", "hello","heyy"]
-        if user_input.lower() in greetings:
-            health_advice_replies.insert(0, "Hello! How can I assist you with your health-related questions today?")
-
-        # Append health-related chatbot replies to the conversation
-        for reply in health_advice_replies:
-            conversation.append({"role": "assistant", "content": reply})
-
-        # Update the conversation in the session
-        request.session['conversation'] = conversation
-        
-
-        return render(request, 'chat.html', {'user_input': user_input,'user_profile':user_profile, 'chatbot_replies': health_advice_replies, 'conversation': conversation})
-    else:
-        request.session.clear()
-        return render(request, 'chat.html', {'conversation': conversation})

@@ -3,28 +3,24 @@ from django.db import models
 class Exercise(models.Model):
     date = models.DateField()
     duration_minutes = models.PositiveIntegerField()
-    # Other fields...
+    
 
 class Diet(models.Model):
     date = models.DateField()
     calories_consumed = models.PositiveIntegerField()
-    # Other fields...
+    
 
 class Sleep(models.Model):
     date = models.DateField()
     hours_slept = models.DecimalField(max_digits=4, decimal_places=2)
-    # Other fields...
 
 class Emotion(models.Model):
     date = models.DateField()
     emotion_type = models.CharField(max_length=20)
-    # Other fields...
+    
 
-# Define other models as needed...
-# health_app/models.py
 
-# models.py
-from django.db import models
+
 
 class Diets(models.Model):
     calories = models.PositiveIntegerField()
@@ -37,7 +33,7 @@ class Diets(models.Model):
 from django.contrib.auth.models import User
 
 
-    # Add additional fields like age, gender, etc.
+
 class UserHealthData(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -53,9 +49,9 @@ from django.db import models
 from django.contrib.auth.models import User 
 
 
-# Define a function to set the default profile image path
+
 def default_profile_image_path():
-    return 'profile_images/default_image.png'  # Adjust the path as needed
+    return 'profile_images/default_image.png'  
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -65,9 +61,8 @@ class UserProfile(models.Model):
     blood_group = models.CharField(max_length=5, default='')
     weight_kg = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=None)
     height_cm = models.PositiveIntegerField(null=True, blank=True, default=None)
-    # Add other health-related fields here
+   
 
-    # Add an image field for user profile pictures with a default value
     profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True, default=default_profile_image_path)
 
     def __str__(self):
@@ -82,7 +77,6 @@ class HealthReport(models.Model):
     date = models.DateField()
     calorie_intake = models.PositiveIntegerField(default=0)
     sleep_duration_minutes = models.PositiveIntegerField(default=0)
-    # Add other health-related fields here
 
     def __str__(self):
         return f"Health Report for {self.user.username} on {self.date}"

@@ -56,3 +56,10 @@ Made with ❤️ by the HealLife team. Start your journey to a healthier and hap
 
 ## Working Images
 <img src="chatbot/1.jpg" alt="HealthTracker Logo">
+<img src="chatbot/2.jpg" alt="HealthTracker Logo">
+<img src="chatbot/3.jpg" alt="HealthTracker Logo">
+<img src="chatbot/4.jpg" alt="HealthTracker Logo">
+<img src="chatbot/5.jpg" alt="HealthTracker Logo">
+<img src="chatbot/6.jpg" alt="HealthTracker Logo">
+<img src="chatbot/7.jpg" alt="HealthTracker Logo">
+

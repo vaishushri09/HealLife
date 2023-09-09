@@ -15,6 +15,12 @@ Track and manage your health and wellness with the HealLife app! 🌟 Get AI-gen
 - **User-friendly Interface**: Enjoy a seamless experience with our clean and intuitive user interface. 🌟
 - **Customizable Settings**: Tailor the app to your preferences and goals. ⚙️
 
+## The Team 👥
+The people who make it Happen at HealLife:
+
+- **AYUSH JHA** 💻
+- **VAISHNAVI SHRIPATI** 💻
+
 ## Installation and Usage 🚀
 
 1. Clone the repository: `git clone https://github.com/yourusername/HealLife.git`

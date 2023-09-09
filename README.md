@@ -1,6 +1,8 @@
 # HealthTracker App 🏃‍♀️🍏🛌
 
 ![HealLife Logo](healthcare-removebg.png)
+<img src="healthcare-removebg.png" alt="HealthTracker Logo" width="100" height="100">
+
 
 Track and manage your health and wellness with the HealthTracker app! 🌟 Monitor your exercise routines 🏋️, diet 🥦, sleep patterns 😴, emotions 😊, and more in one convenient place. Stay on top of your wellness journey and make healthier lifestyle choices with ease.
 
